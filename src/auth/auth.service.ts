@@ -41,7 +41,7 @@ export class AuthService {
     if (!pwMatches) {
       throw new ForbiddenException('Credentials invalid');
     }
-    return this.signToken(user._id, user.password);
+    return this.signToken(user._id, user.username);
   }
 
   async signToken(

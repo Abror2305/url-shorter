@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { UrlModule } from './url/url.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UrlModule } from './url/url.module';
     MongooseModule.forRoot(process.env.DB_URL),
     AuthModule,
     UrlModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
