@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { Users, UsersSchema } from './entities/auth.entity';
+import { Users, UsersSchema } from '../entities/';
 import { JwtStategy } from './strategy/jwt.stategy';
 
 @Module({

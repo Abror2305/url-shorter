@@ -2,10 +2,10 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SignInDto, SignUpDto } from './DTOs';
-import { Users } from './entities/auth.entity';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { Users } from 'src/entities';
 @Injectable()
 export class AuthService {
   constructor(
