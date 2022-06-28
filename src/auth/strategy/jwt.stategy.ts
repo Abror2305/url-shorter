@@ -5,6 +5,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Model } from 'mongoose';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Users } from 'src/entities';
+import { User } from 'src/user/interfaces';
 
 @Injectable()
 export class JwtStategy extends PassportStrategy(Strategy) {
@@ -17,10 +18,9 @@ export class JwtStategy extends PassportStrategy(Strategy) {
       secretOrKey: config.get('JWT_SECRET'),
     });
   }
-  async validate(payload: { sub: string; email: string }) {
-    const user = await this.userModel.findById(payload.sub, {
+  async validate(payload: { sub: string; email: string }): Promise<User> {
+    const user: User = await this.userModel.findById(payload.sub, {
       password: 0,
-      __v: 0,
     });
     return user;
   }
