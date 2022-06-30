@@ -29,7 +29,14 @@ export class UrlService {
       throw new NotFoundException('This url not found');
     }
     if (data.maxClicks && data.maxClicks < data.clicks) {
-      return new BadRequestException('Maximum clicks ');
+      throw new BadRequestException('The maximum number of clicks is over');
+    }
+
+    if (
+      data.expiresIn &&
+      new Date().getTime() > new Date(data.expiresIn).getTime()
+    ) {
+      throw new BadRequestException('Time is over');
     }
     data.clicks++;
     data.save();
