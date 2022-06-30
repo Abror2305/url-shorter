@@ -28,7 +28,7 @@ export class UrlService {
     if (!data) {
       throw new NotFoundException('This url not found');
     }
-    if (data.maxClicks && data.maxClicks < data.clicks) {
+    if (data.maxClicks && data.maxClicks <= data.clicks) {
       throw new BadRequestException('The maximum number of clicks is over');
     }
 
