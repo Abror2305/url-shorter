@@ -7,7 +7,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Urls } from 'src/entities/url.entity';
-import { GenerateDto } from './DTOs';
+import { GenerateDto, UpdateDto } from './DTOs';
 import { Url } from './interfaces';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UrlService {
   async generateUrl(dto: GenerateDto, id: ObjectId) {
     if (new Date().getTime() >= new Date(dto.expiresIn).getTime()) {
       throw new NotAcceptableException(
-        'expiresIn must be less than current time!',
+        'expiresIn must be greater than current time!',
       );
     }
     const data: Url = Object.assign(dto, { userId: id });
@@ -41,5 +41,25 @@ export class UrlService {
     data.clicks++;
     data.save();
     return { url: data.url, statusCode: 301 };
+  }
+  async deleteUrl(userId: ObjectId, linkId: string) {
+    const url = await this.urlModel.findOneAndDelete({ userId, _id: linkId });
+
+    if (!url) {
+      throw new NotFoundException('link id is invalid');
+    }
+    return url;
+  }
+  async update(userId: ObjectId, linkId: string, dto: UpdateDto) {
+    if (new Date().getTime() >= new Date(dto.expiresIn).getTime()) {
+      throw new NotAcceptableException(
+        'expiresIn must be greater than current time!',
+      );
+    }
+    const data = await this.urlModel.findOneAndUpdate(
+      { userId, _id: linkId },
+      { $set: dto },
+    );
+    return data;
   }
 }
