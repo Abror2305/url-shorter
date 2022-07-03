@@ -1,8 +1,7 @@
 import {
   Injectable,
-  NotFoundException,
   NotAcceptableException,
-  BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
@@ -23,24 +22,12 @@ export class UrlService {
     const url = await this.urlModel.create(data);
     return url;
   }
-  async redirect(id: string) {
-    const data: Urls = await this.urlModel.findById(id);
+  async info(userId: ObjectId, linkId: string) {
+    const data = await this.urlModel.findOne({ userId, _id: linkId });
     if (!data) {
-      throw new NotFoundException('This url not found');
+      throw new NotFoundException('link id is invalid');
     }
-    if (data.maxClicks && data.maxClicks <= data.clicks) {
-      throw new BadRequestException('The maximum number of clicks is over');
-    }
-
-    if (
-      data.expiresIn &&
-      new Date().getTime() > new Date(data.expiresIn).getTime()
-    ) {
-      throw new BadRequestException('Time is over');
-    }
-    data.clicks++;
-    data.save();
-    return { url: data.url, statusCode: 301 };
+    return data;
   }
   async deleteUrl(userId: ObjectId, linkId: string) {
     const url = await this.urlModel.findOneAndDelete({ userId, _id: linkId });

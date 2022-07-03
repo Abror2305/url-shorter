@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { Urls, UrlSchema } from './entities/url.entity';
 import { UrlModule } from './url/url.module';
 import { UserModule } from './user/user.module';
 
@@ -13,6 +14,12 @@ import { UserModule } from './user/user.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URL),
+    MongooseModule.forFeature([
+      {
+        name: Urls.name,
+        schema: UrlSchema,
+      },
+    ]),
     AuthModule,
     UrlModule,
     UserModule,
