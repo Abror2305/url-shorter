@@ -46,6 +46,7 @@ export class UrlService {
     const data = await this.urlModel.findOneAndUpdate(
       { userId, _id: linkId },
       { $set: dto },
+      { new: true },
     );
     return data;
   }
