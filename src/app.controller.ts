@@ -11,7 +11,8 @@ import { ObjectId } from 'mongoose';
 import { AppService } from './app.service';
 import { GetUser } from './auth/decorator';
 import { JwtGuard } from './auth/guard';
-
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+@ApiTags('Main')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -21,6 +22,7 @@ export class AppController {
   redirectUrl(@Param('id') id: string) {
     return this.appService.redirect(id);
   }
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Get('/qr/:id')
   async qrcode(

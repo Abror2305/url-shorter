@@ -13,7 +13,9 @@ import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { GenerateDto, UpdateDto } from './DTOs';
 import { UrlService } from './url.service';
-
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+@ApiTags('Url')
+@ApiBearerAuth()
 @UseGuards(JwtGuard)
 @Controller('url')
 export class UrlController {
